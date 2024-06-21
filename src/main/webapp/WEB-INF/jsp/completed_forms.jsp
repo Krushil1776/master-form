@@ -97,9 +97,10 @@
                                     <th class="text-center">Preview</th>
                                 </tr>
                             </thead>
+                            
                             <tbody id="form_datatablee">
-                                <!-- Rows will be dynamically generated here -->
                             </tbody>
+                            
                         </table>
                     </div>
                 </div>
@@ -117,10 +118,62 @@
                         </button>
                     </div>
 
-                    <div class="modal-body" style="background-color: #F3F3F3;">
-                        <div class="card mb-2 queshadow">
-                            
+                      <div class="modal-body" style="background-color: #F3F3F3;">
+                    <div id="a" class="card mb-2 queshadow">
+                        <div class="card-body">
+                            <div class="row pr-3 pl-3">
+                                <div class="col-xl-4 col-lg-4 col-sm-4 colmspadding">
+                                    <p class="compact mb-1"><span class="font-weight-700">Completed Date</span>
+                                        <span class="displayblock font-medium-2">01-07-2020</span>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
+                    </div>
+
+                    <div id="b" class="detailsbg">
+                        <div class="row pr-2 pl-2">
+                            <div class="col-xl-12 col-lg-12 col-sm-12 col-xs-12 colmspadding">
+                                <p class="mb-1 font-weight-600"><span class="font-weight-700">Form Title:</span>
+                                    <span>251 Attwell Drive - Operator Form - Monthly</span></p>
+
+                                <p class="mb-0 font-weight-600"><span class="font-weight-700">Description:</span>
+                                    <span>Are all portable fire extinguishers visually inspected every month?At minimum,
+                                        the following list of items should be inspected extinguisher in proper location
+                                        and mounted.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div  class="card mb-2 queshadowq">
+                        <div class="card-body">
+                           <div class="row pl-2 pr-2">
+                                 <div class="col-xl-1 col-lg-1 col-sm-2 colmspadding">
+                                    <span class="question">Q : 1</span>
+                                 </div>
+         
+                                 <div class="col-xl-11 col-lg-11 col-sm-10 colmspadding">
+                                    <div class="form-group mb-0 text-justify">
+                                       <p class="font-weight-700 mb-1 text-justify"><span class="text-danger">*</span> Emergency Power Systems &amp; Lighting</p>
+                                       <p class="mb-1">Are the self-contained battery powered emergency lights inspected and tested at least once a month?</p>
+                                    </div>
+         
+                                    <div class="form-group mb-0">
+                                       <div class="row pl-2 pr-2">
+                                          <div class="col-xl-12 col-lg-12 col-sm-12 colmspadding">
+                                             <p class="font-weight-700 mb-1 text-justify">Answer</p>
+                                             <p class="mb-1 text-justify">Choice 1</p>
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                           </div>
+                        </div>
+                    </div>
+
+                  
+                        	
                     </div>
 
                     <div class="modal-footer bg-white">

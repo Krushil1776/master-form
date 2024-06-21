@@ -18,6 +18,17 @@ public class Answersubmit {
 	int questionid;
 	int formid;
 	int active;
+	
+	int SubmitBy;
+
+	public int getSubmitBy() {
+		return SubmitBy;
+	}
+
+
+	public void setSubmitBy(int submitBy) {
+		SubmitBy = submitBy;
+	}
 
 	String value;
 		

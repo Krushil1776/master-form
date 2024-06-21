@@ -472,7 +472,7 @@
                                                 <a id="SaveAllForm" onclick="SaveAllForm()"
                                                     class=" btn btn-success text-white btn-padding ml-1"><i
                                                         class="fa fa-floppy-o mr-2"></i>Save</a>
-                                                <a onclick="" class="show_port_table btn btn-danger text-white btn-padding ml-1"><i
+                                                <a onclick="clearForm()" class="show_port_table btn btn-danger text-white btn-padding ml-1"><i
                                                         class="fa fa-times mr-2"></i>Cancel</a>
                                             </div>
                                         </div>
@@ -864,7 +864,7 @@
 
                                 <div class="singlechoicedata" style="display: none;">
                                     <hr class="mb-2 mt-2">
-                                    <table class="table table-striped nowrap mb-0 singlechoicetable">
+                                    <table  class="table table-striped nowrap mb-0 singlechoicetable">
                                         <tbody id="singlechoicedataQ">
 	                                            <tr>
 	                                                <td class="text-center border-0" width="5%">
@@ -1102,7 +1102,7 @@
   
 <script src="js/master_form1.js"></script>
 <script src="js/QuestionPreview.js"></script>
- <script src="js/master_form2.js"></script>
+ <script src="js/mf2.js"></script>
         <script src="js/master_form3.js"></script>
     
     <script src="assets/js/waves.js"></script>
@@ -1116,7 +1116,7 @@
     <script src="assets/plugins/bootstrap-select/js/bootstrap-select.js"></script>
 
     <script src="assets/custom/plugins/typeahead/js/bootstrap-typeahead.js"></script>
-    <script src="assets/plugins/moment/moment.js"></script>
+    <script src="assets/plugins/moment/moment.js"></script>		
     <script src="assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js"></script>
 
@@ -1268,7 +1268,15 @@
 
         // Start Singlechoice add table
         $(".singlechoicetable").on("click", ".singlechoiceremove", function () {
-            $(this).closest("tr").remove();
+
+        	
+            
+            remove = $(".singlechoicetable input").length;
+
+            if(remove > 1){
+                $(this).closest("tr").remove();
+            }   
+        
         });
 
         $(document).on("click", ".singlechoiceadd", function () {
@@ -1280,8 +1288,12 @@
 
         // Start Multichoice add table
         $(".multichoicetable").on("click", ".multichoiceremove", function () {
-            $(this).closest("tr").remove();
-        });
+        	   remove = $(".multichoicetable input").length;
+
+               if(remove > 1){
+                   $(this).closest("tr").remove();
+               }     
+               });
 
         $(document).on("click", ".multichoiceadd", function () {
             var addNewRow = "<tr><td class='text-center border-0' width='5%'><i class='fa fa-arrow-right' aria-hidden='true'></i></td><td class='border-0 p-1'><div class='form-group mb-0'><input type='text' class='form-control' placeholder='Enter an answer choice in English'></div></td><td class='text-center border-0 p-0' width='3%'><a href='javascript:void(0)' class='multichoiceadd'><i class='fa fa-plus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i></a></td><td class='text-center border-0 p-0' width='3%'><a href='javascript:void(0)' class='multichoiceremove'><i class='fa fa-minus-square-o font_20 m-t-5 text-default' aria-hidden='true'></i></a></td></tr>";
@@ -1292,7 +1304,15 @@
 
         // Start Singleselect add table
         $(".singleselecttable").on("click", ".singleselectremove", function () {
-            $(this).closest("tr").remove();
+
+        	
+     	   remove = $(".singleselecttable input").length;
+
+            if(remove > 1){
+                $(this).closest("tr").remove();
+            }     
+
+         
         });
 
         $(document).on("click", ".singleselectadd", function () {
@@ -1304,7 +1324,14 @@
 
         // Start Multiselect add table
         $(".multiselecttable").on("click", ".multiselectremove", function () {
-            $(this).closest("tr").remove();
+
+        	
+      	   remove = $(".multiselecttable input").length;
+
+             if(remove > 1){
+                 $(this).closest("tr").remove();
+             }  
+        
         });
 
         $(document).on("click", ".multiselectadd", function () {

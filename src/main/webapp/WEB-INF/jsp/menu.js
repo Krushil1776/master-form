@@ -1,66 +1,46 @@
-	var usertype = localStorage.getItem("username");
+var usertype = localStorage.getItem("username");
+
+function createMenu(items) {
+    var menu = "<div class='navbar-custom'>";
+    menu += "<div class='container-fluid colmspadding'>";
+    menu += "<div id='navigation'>";
+    menu += "<ul class='navigation-menu'>";
+
+    items.forEach(function(item) {
+        menu += "<li class='has-submenu' id='" + item.id + "'>";
+        menu += "<a href='" + item.link + "'><i class='" + item.icon + "' aria-hidden='true'></i>" + item.text + "</a>";
+        if (item.submenu) {
+            menu += "<ul class='submenu'>";
+            item.submenu.forEach(function(subitem) {
+                menu += "<li><a href='" + subitem.link + "' class='subpaddings'>" + subitem.text + "</a></li>";
+            });
+            menu += "</ul>";
+        }
+        menu += "</li>";
+    });
+
+    menu += "</ul>";
+    menu += "</div>";
+    menu += "</div>";
+    menu += "</div>";
+
+    document.write(menu);
+}
 
 if (usertype == "admin") {
-    document.write("<div class='navbar-custom'>");
-    document.write("<div class='container-fluid colmspadding'>");
-    document.write("<div id='navigation'>");
-
-    document.write("<ul class='navigation-menu'>");
-    document.write("<li class='has-submenu' id='master_form'>");
-    document.write("<a href='masterf'><i class='fa fa-plus-circle' aria-hidden='true'></i>Create Form</a>");
-    document.write("</li>");
-
-    document.write("<li class='has-submenu' id='fill_forms'>");
-    document.write("<a href='fillf'><i class='fa fa-file-text-o' aria-hidden='true'></i>Fill Form</a>");
-    document.write("</li>");
-
-    document.write("<li class='has-submenu' id='completed_forms'>");
-    document.write("<a href='completed_forms.html'><i class='fa fa-check-circle' aria-hidden='true'></i>Completed Form</a>");
-    document.write("</li>");
-
-    // document.write("<li class='has-submenu float-menu' id='adminpanel' style='float: none'>");
-    // document.write("<a href='#'><i class='fa fa-pie-chart' aria-hidden='true'></i>Reporting</a>");
-    // document.write("<ul class='submenu'>");
-    // document.write("<li><a href='fill_forms.html' class='subpaddings'>Fill Forms</a></li>");
-    // document.write("<li><a href='completed_forms.html' class='subpaddings'>Completed Forms</a></li>");
-    // document.write("</ul>");
-    // document.write("</li>");
-
-    document.write("<li class='has-submenu float-menu' id='adminpanel' style='float: none'>");
-    document.write("<a href='#'><i class='fa fa-tasks' aria-hidden='true'></i>Masters</a>");
-    document.write("<ul class='submenu'>");
-    document.write("<li><a href='master_users.html' class='subpaddings'>Users</a></li>");
-    document.write("</ul>");
-    document.write("</li>");
-
-    document.write("</ul>");
-
-    document.write("</div>");
-    document.write("</div>");
-    document.write("</div>");
-} 
-
-else if (usertype == "client") 
-{
-    document.write("<div class='navbar-custom'>");
-    document.write("<div class='container-fluid colmspadding'>");
-    document.write("<div id='navigation'>");
-
-    document.write("<ul class='navigation-menu'>");
-
-    document.write("<li class='has-submenu' id='fill_forms'>");
-    document.write("<a href='fill_forms.html'><i class='fa fa-file-text-o' aria-hidden='true'></i>Fill Form</a>");
-    document.write("</li>");
-
-    document.write("<li class='has-submenu' id='completed_forms'>");
-    document.write("<a href='completed_forms.html'><i class='fa fa-check-circle' aria-hidden='true'></i>Completed Form</a>");
-    document.write("</li>");
-
-    document.write("</ul>");
-    document.write("</li>");
-    document.write("</ul>");
-
-    document.write("</div>");
-    document.write("</div>");
-    document.write("</div>");
+    var adminMenuItems = [
+        { id: 'master_form', link: 'masterf', icon: 'fa fa-plus-circle', text: 'Create Form' },
+        { id: 'fill_forms', link: 'fillf', icon: 'fa fa-file-text-o', text: 'Fill Form' },
+        { id: 'completed_forms', link: 'completed_forms.html', icon: 'fa fa-check-circle', text: 'Completed Form' },
+        { id: 'adminpanel', link: '#', icon: 'fa fa-tasks', text: 'Masters', submenu: [
+            { link: 'master_users.html', text: 'Users' }
+        ]}
+    ];
+    createMenu(adminMenuItems);
+} else if (usertype == "client") {
+    var clientMenuItems = [
+        { id: 'fill_forms', link: 'fill_forms.html', icon: 'fa fa-file-text-o', text: 'Fill Form' },
+        { id: 'completed_forms', link: 'completed_forms.html', icon: 'fa fa-check-circle', text: 'Completed Form' }
+    ];
+    createMenu(clientMenuItems);
 }

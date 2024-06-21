@@ -140,6 +140,13 @@
                                 </div>
                                 <div class="col-xl-4 col-lg-4 col-sm-4">
                                     <a onClick="AddUsers()" href="javascript:void(0)" class="btn btn-warning waves-effect float-right btn-padding client_add_btn"><i class="fa fa-plus"></i> Add Users</a>
+                      
+                      <!-- Excel -->
+                      
+                             <form  id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="file" name="file" accept=".xlsx"/>
+        <button type="button" onclick="uploadFile()">Upload</button>
+    </form>
                                 </div>
                             </div>
                         </div>
@@ -218,10 +225,10 @@
 
                                 <div class="btn btn-success text-white btn-padding mt-2" style="position: relative; overflow: hidden;">
                                     <i class="fa fa-upload mr-2"></i> Upload
-                                    <input  type="file" name="file" style="opacity: 0; right: 0; position: absolute;">
+                                    <input  onchange="imgview(this)" type="file" name="file" style="opacity: 0; right: 0; position: absolute;">
                                 </div>
 
-                                <div class="btn btn-success text-white btn-padding mt-2 ml-1">
+                                <div class="btn btn-success text-white btn-padding mt-2 ml-1" id="remove" onClick="imgclear()" >
                                     <i class="fa fa-trash mr-2"></i> Remove
                                 </div>
                             </div>
@@ -330,7 +337,7 @@
                         </div>
 
                         <div class="text-center border-top mt-1 pt-2 mb-2">
-                            <a onClick="Saveuseraddmin()" class="save_port_details btn btn-success text-white btn-padding"><i  class="fa fa-floppy-o mr-2"></i>Save</a>
+                            <a onClick="Saveuseraddmin()" class=" btn btn-success text-white btn-padding"><i  class="fa fa-floppy-o mr-2"></i>Save</a>
                             <a class="show_port_table btn btn-danger text-white btn-padding ml-1"><i class="fa fa-times mr-2"></i>Cancel</a>
                         </div>
                     </div>
@@ -443,6 +450,23 @@ $("#searchbtn").click(function(){
     $("#searchcollapse").trigger('click');
 });
 
+$(document).ready(function() {
+    $('#fileInput').change(function(e) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            $('#userImage').attr('src', e.target.result);
+        }
+        reader.readAsDataURL(e.target.files[0]);
+    });
+
+    $('#removeBtn').click(function() {
+        // Clear the file input
+        $('#fileInput').wrap('<form>').closest('form').get(0).reset();
+        $('#fileInput').unwrap();
+        // Reset the image to default
+        $('#userImage').attr('src', 'assets/images/users/default_user.png');
+    });
+});
 </script>
 
 </body>

@@ -29,6 +29,10 @@ public class QuestionS{
 	}
 
 	public Optional<Question> nameq(int id) {
+		
+		Question question=questionR.findById(id).orElse(null);
+		System.out.println(" cdsfcewcwe s"+question);
+		
 		return questionR.findById(id);
 		
 	}
@@ -36,8 +40,10 @@ public class QuestionS{
 	public void deleteqee(Integer id) {
 questionR.deleteByFormid(id);		
 	}
-	
-	
 
+	
+	
+	
+ 
 
 }

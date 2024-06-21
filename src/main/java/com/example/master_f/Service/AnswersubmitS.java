@@ -15,7 +15,12 @@ public class AnswersubmitS {
 	AnswersubmitR answersubmitR;
 
 	public void saveans(List<Answersubmit> answersubmit) {
+		
 		answersubmitR.saveAll(answersubmit);
+	}
+
+	public List<Object> Gq(int formid, int submit ) {
+	return	answersubmitR.findByAnswerAndQuestion(formid,submit);
 	}
 
 

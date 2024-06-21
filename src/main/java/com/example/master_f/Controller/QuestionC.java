@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.master_f.Modal.Question;
@@ -38,4 +39,10 @@ public Optional<Question> getNameQuestion(@PathVariable int id ) {
 	public void delete(@PathVariable Integer formid) {
 	questionS.deleteqee(formid);
 }
+
+ 
+/*
+ * @GetMapping("/Getquestionsubmitby/{id}") public Question q(@PathVariable int
+ * id) { System.out.println(id); return questionS.getquestionsubmittime(id); }
+ */
 }

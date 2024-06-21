@@ -80,13 +80,13 @@
                 </ul>
             </div>
         </div>
-
-        <div class="row mt-2">
-            <div class="col-xl-3 col-lg-4 col-sm-4 colmspadding">
-                <div class="card mb-2">
-                    <div class="card-body p-0">
-                        <div class="panel panel-default">
-                            <div class="panel-wrapper">
+<div id="profileContainer"> </div>
+	     <!--    <div class="row mt-2">
+	            <div class="col-xl-3 col-lg-4 col-sm-4 colmspadding">
+	                <div class="card mb-2">
+	                    <div class="card-body p-0">
+	                        <div class="panel panel-default">
+	                            <div class="panel-wrapper">
                                 <div class="panel-body">
                                     <div class="profile-box">
                                         <div class="profile-cover-pic">
@@ -204,6 +204,7 @@
                                                 <p class="mb-0">English</p>
                                             </div>
                                         </div>
+                                
                                     </div>
                                 </div>
                             </div>
@@ -253,7 +254,8 @@
                                                             </td>
                                                             <td class="text-center">
                                                                 <div class="switchery-demo">
-                                                                    <input type="checkbox" checked data-plugin="switchery" data-color="#64b0f2" data-size="small"/>
+                                                                
+                                                                    <input  type="checkbox" checked data-plugin="switchery" data-color="#64b0f2" data-size="small"/>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -271,8 +273,16 @@
         </div>                
 
     </div>
+</div> -->
+
+         <div class="col-xl-2 col-lg-4 col-sm-6 col-xs-12 colmspadding">
+    <div class="form-group mb-2">
+        <input type="hidden" id="uidd" value="${userId}" />
+
+    </div>
 </div>
-<!-- end wrapper -->
+ 
+   
     
 <script src="assets/custom/js/footer.js"></script>
 
@@ -282,6 +292,7 @@
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/waves.js"></script>
 <script src="assets/js/jquery.slimscroll.js"></script>
+<script src="js/Profile.js"></script>
 
 <script src="assets/custom/plugins/switchery/js/switchery.min.js"></script>
 
@@ -297,6 +308,8 @@
 <!-- App js -->
 <script src="assets/js/jquery.core.js"></script>
 <script src="assets/js/jquery.app.js"></script>
+    <script src="path/to/auth.js"></script>
+
 <script src="assets/custom/js/custom.js"></script>
 <script src="assets/custom/plugins/image_change/image-change.js"></script>
 <script src="assets/custom/plugins/jquery_confirm_v3/jquery-confirm.min.js"></script>

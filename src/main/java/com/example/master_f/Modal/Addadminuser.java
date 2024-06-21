@@ -6,15 +6,24 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.security.SecureRandom;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class Addadminuser {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    int id;
+    Integer id;
 
-    String fname;
+    public LocalDateTime getModifieon() {
+		return modifieon;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	String fname;
     String lname;
     String email;
     String contactno;
@@ -37,9 +46,13 @@ public class Addadminuser {
 	int active;
 
 int createby;
-Date createon;
+LocalDateTime createon;
 int modifieby;
-Date modifieon;
+LocalDateTime modifieon;
+public void setModifieon(LocalDateTime modifieon) {
+	this.modifieon = modifieon;
+}
+
 String ipaddress;
 
 
@@ -53,11 +66,13 @@ public void setCreateby(int createby) {
 	this.createby = createby;
 }
 
-public Date getCreateon() {
+
+
+public LocalDateTime getCreateon() {
 	return createon;
 }
 
-public void setCreateon(Date createon) {
+public void setCreateon(LocalDateTime createon) {
 	this.createon = createon;
 }
 
@@ -68,14 +83,7 @@ public int getModifieby() {
 public void setModifieby(int modifieby) {
 	this.modifieby = modifieby;
 }
-
-public Date getModifieon() {
-	return modifieon;
-}
-
-public void setModifieon(Date modifieon) {
-	this.modifieon = modifieon;
-}
+	
 
 public String getIpaddress() {
 	return ipaddress;
@@ -90,7 +98,7 @@ public void setIpaddress(String ipaddress) {
     }
 
     public void setPassword(String password) {
-        this.password = generateRandomPassword(10);
+        this.password = password;
     }
 
     public int getId() {
@@ -197,5 +205,10 @@ public void setIpaddress(String ipaddress) {
 
         return password.toString();
     }
+
+	public Addadminuser orElseThrow(Object object) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

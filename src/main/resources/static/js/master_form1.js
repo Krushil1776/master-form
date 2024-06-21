@@ -1,4 +1,4 @@
-function qedit( answertype,formid,qName,questionlabel,requiree,description) {
+	function qedit( answertype,formid,qName,questionlabel,requiree,description) {
 
         $("#qmodal").modal("show");
  

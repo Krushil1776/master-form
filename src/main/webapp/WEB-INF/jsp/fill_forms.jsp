@@ -787,6 +787,15 @@
 
                 </div>
 
+     <div class="col-xl-2 col-lg-4 col-sm-6 col-xs-12 colmspadding">
+    <div class="form-group mb-2">
+        <input type="hidden" id="uidd" value="${userId}" />
+
+    </div>
+</div>
+ 
+
+
                 <div class="modal-footer bg-white">
                     <a onClick="Clearformfill()" class="btn btn-success float-right btn-padding" data-dismiss="modal"><i
                             class="fa fa-times mr-2"></i>Close</a>

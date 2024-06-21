@@ -40,7 +40,7 @@ document.write("</a>");
 document.write("<a href='javascript:void(0)' class='dropdown-item notify-item border-0' data-toggle='modal' data-target='.changepasswordmodal'>");
 document.write("<i class='fa fa-key'></i> <span>Change Password</span>");
 document.write("</a>");
-document.write("<a href='index' onclick='javascript:window.localStorage.clear();' class='dropdown-item notify-item border-0'>");
+document.write("<a href='/logout' onclick='javascript:window.localStorage.clear();' class='dropdown-item notify-item border-0'>");
 document.write("<i class='fa fa-sign-out'></i> <span>Logout</span>");
 document.write("</a>");
 document.write("</div>");

@@ -47,7 +47,18 @@ public class Question {
 
 	int Validateq;
 
+	int active;
 
+
+
+	public int getActive() {
+		return active;
+	}
+
+
+	public void setActive(int active) {
+		this.active = active;
+	}
 
 
 	public int getValidateq() {

@@ -1,6 +1,9 @@
 package com.example.master_f.Modal;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,9 +32,18 @@ public class Form {
 	String Text;
 
 	int createby;
-	Date createon;
+	LocalDateTime createon;
 	int modifieby;
-	Date modifieon;
+	LocalDateTime modifieon;
+
+	public void setCreateon(LocalDateTime localDateTime) {
+		this.createon = localDateTime;
+	}
+
+
+	public void setModifieon(LocalDateTime modifieon) {
+		this.modifieon = modifieon;
+	}
 
 	String ipaddress;
 
@@ -172,14 +184,6 @@ public class Form {
 	}
 
 
-	public Date getCreateon() {
-		return createon;
-	}
-
-
-	public void setCreateon(Date createon) {
-		this.createon = createon;
-	}
 
 
 	public Integer getId() {
@@ -202,14 +206,6 @@ public class Form {
 	}
 
 
-	public Date getModifieon() {
-		return modifieon;
-	}
-
-
-	public void setModifieon(Date modifieon) {
-		this.modifieon = modifieon;
-	}
 
 
 	public String getIpaddress() {
@@ -233,8 +229,8 @@ public class Form {
 	  subcharacteristic; this.recurrence = recurrence; this.startmonth =
 	  startmonth; this.complianceperiod = complianceperiod; this.Effective_Date =
 	  effective_Date; this.active = active; this.Text = text; this.createby =
-	  createby; this.createon = createon; this.modifieby = modifieby;
-	  this.modifieon = modifieon; this.ipaddress = ipaddress; }
+	  createby;  this.modifieby = modifieby;
+	  this.ipaddress = ipaddress; }
 	 
 	public Form() {}
 

@@ -9,8 +9,13 @@ import org.springframework.stereotype.Service;
 import com.example.master_f.Modal.Form;
 import com.example.master_f.Repositry.FormR;
 
+import jakarta.servlet.http.HttpSession;
+
 @Service
 public class FormS{
+	@Autowired
+    private HttpSession httpSession;
+
 	@Autowired
 	FormR formR;
 
@@ -30,12 +35,13 @@ public class FormS{
 	}
 
 	public Object geta(Integer id) {
-		
-		return formR.findData(id);
+				return formR.findData(id);
 	}
 
 	public List<Form> getfill() {
-		return formR.findByfill();
+		Integer id=(Integer)httpSession.getAttribute("userId");
+		System.out.println(id);
+		return formR.findByfill(id);
 	
 		
 	}

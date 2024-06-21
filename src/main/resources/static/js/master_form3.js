@@ -173,9 +173,7 @@ function Module(){
 
 			 // Append options retrieved from AJAX call
 			 $.each(response, function (index, item) {
-			console.log(item.characteristicid);
 				 if (item.active == 1 &&  valuee==item.characteristicid) {
-	console.log(item.characteristicName);
 					 dropdown.append($('<option></option>').val(item.subCharacteristicid).text(item.subCharacteristicname));
 				 }
 			 });
@@ -317,8 +315,8 @@ function displayf() {  //all Form data in 1page
 		}
 	});
 }
-
-function updateAndShow(id) {  //form data Show
+/*--------------------------------------------------------------------------------------------------------------------------------------------
+*/function updateAndShow(id) {  //form data Show
 	
 	$('#fid').val(id);
 GlobalNumberSaveEdit=$('#fid').val();
@@ -392,8 +390,84 @@ console.log(response);
 		}
 	});
 }
+	
+function QShow(id) {
+    $.ajax({
+        url: "/GetQuestion/" + id, // Replace with your actual endpoint
+        type: 'GET',
+        dataType: "json",
+        success: function(response) {
+            if (response && response.length > 0) {
+                formData = response;
 
-function QShow(id) { // edit time
+                var table = $("#formquestion_datatable").DataTable();
+                table.clear();
+
+                var promises = formData.map((question) => {
+                    if (question.requiree == 1 || question.requiree == 0) {
+                        return fetchChoices(question.questionlabel); // Ensure the correct property is used
+                    } else {
+                        return Promise.resolve();
+                    }
+                });
+
+                Promise.all(promises).then(() => {
+                    displayFormData();
+                }).catch(error => {
+                    console.error('Error fetching choices:', error);
+                });
+            } else {
+                console.log('No data found or invalid response format.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+function fetchChoices(questionlabel) {
+    return new Promise((resolve, reject) => {
+        $.ajax({
+            url: "/GetOPtion/" + questionlabel, // Replace with your actual endpoint
+            type: 'GET',
+            dataType: "json",
+            success: function(response) {
+                var choices = [];
+
+                if (response && response.length > 0) {
+                    response.forEach(function(item) {
+                        choices.push(item.ans);
+                    });
+
+                    storeChoices(questionlabel, choices);
+                    resolve();
+                } else {
+                    console.log('No data found or invalid response format.');
+                    resolve();
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error fetching data:', error);
+                reject(error);
+            }
+        });
+    });
+}
+
+function storeChoices(questionlabel, choices) {
+    formData.forEach((question) => {
+        if (question.questionlabel === questionlabel) {
+            question.choices = choices;
+        }
+    });
+}
+
+
+
+
+/*
+function QShow(id) {
     $.ajax({
         url: "/GetQuestion/" + id, // Replace with your actual endpoint
         type: 'GET',
@@ -401,60 +475,19 @@ function QShow(id) { // edit time
         success: function(response) {
             // Check if response contains formData and it's an array
             if (response && response.length > 0) {
-    var table = $("#formquestion_datatable").DataTable();
-    table.clear();
-                let namee;            
+                // Store response data in the global array
+                formData = response;
+
+                // Clear the DataTable
+                var table = $("#formquestion_datatable").DataTable();
+                table.clear();
+                let namee;
+
                 // Iterate over each question in formData and append it to the table
-                response.forEach((question, index) => {
-					if(question.requiree==1||question.requiree==0){
-						
-						
-                    let o = question.answertype;
-
-                    // Map answerType to a human-readable name using if-else if-else
-                    if (o == '1') {
-                        namee = "No Answer Required";
-                    } else if (o == '2') {
-                        namee = "Single Choice";
-                    } else if (o == '3') {
-                        namee = "Multiple Choice";
-                    } else if (o == '4') {
-                        namee = "Single Textbox";
-                    } else if (o == '5') {
-                        namee = "Multiline Textbox";
-                    } else if (o == '6') {
-                        namee = "Single Select Dropdown";
-                    } else if (o == '7') {
-                        namee = "Multi Select Dropdown";
-                    } else if (o == '8') {
-                        namee = "Date";
-                    } 
-
-                    // Generate HTML for the values array
-                    let valuesHtml = "";
-                    if (Array.isArray(question.values)) {
-                        valuesHtml = question.values.map(value => '<span>' + value + '</span>').join(', ');
+                formData.forEach((question, index) => {
+                    if (question.requiree == 1 || question.requiree == 0) {
+displayFormData();
                     }
-            
-                                             let formDataHtml = '<tr>';
-formDataHtml += '<td>' + (index + 1) + '</td>';
-formDataHtml += '<td>' + question.qName + '</td>';
-formDataHtml += '<td>' + namee + '</td>';
-formDataHtml += '<td>' + (question.requiree == 1 ? 'Yes' : 'No') + '</td>';
-formDataHtml += '<td class="text-center">';
-formDataHtml += '<span class="edit-user-alert" data-index="' + index + '">';
-// Corrected the onClick syntax
-formDataHtml += '<a onClick="qedit(' + question.answertype + ',' + question.formid + ',\'' + question.qName + '\',\'' + question.questionlabel + '\',' + question.requiree + ',\'' + question.description + '\')"  href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="text-success fa-size"><i class="fa fa-pencil"></i></a>';
-formDataHtml += '</span>';
-formDataHtml += '<span class="delete-user-alert">';
-formDataHtml += `<a onClick="deleteq('${question.id}')" href="javascript:void(0)" class="text-danger fa-size" data-toggle="tooltip" data-placement="bottom" data-original-title="Delete"><i class="fa fa-trash"></i></a>`;
-formDataHtml += '</span>';
-formDataHtml += '</td>';
-formDataHtml += '</tr>';
-
-        table.row.add($(formDataHtml)).draw(false);
-					}
-
                 });
             } else {
                 console.log('No data found or invalid response format.');
@@ -467,7 +500,36 @@ formDataHtml += '</tr>';
 }
 
 
+$.ajax({
+    url: "/GetOPtion/" + questionlabel, // Replace with your actual endpoint
+    type: 'GET',
+    dataType: "json",
+    success: function(response) {
+        // Define the choices array
+        var choices = [];
 
+        // Check if response contains formData and it's an array
+        if (response && response.length > 0) {
+            // Iterate over the response to populate the choices array
+            response.forEach(function(item) {
+                choices.push(item);
+            });
+
+            // Now you can use the choices array as needed
+            console.log('Choices array:', choices);
+        } else {
+            console.log('No data found or invalid response format.');
+        }
+    },
+    error: function(xhr, status, error) {
+        console.error('Error fetching data:', error);
+    }
+});
+*/
+
+
+
+/*
 function deleteq(id){
 	var data={};
 	  $.ajax({
@@ -484,4 +546,155 @@ function deleteq(id){
         }
     });
 }
+
+*/
+
+
+/*
+
+function editQuestionn(index) {
+	alert(index);
+	editIndex = index;
+	let question = formData[index];
+	$('#QuestionLabel').val(question.questionlabel);
+	$('#QuestionName').val(question.qName);
+	$('#QDescription').val(question.description);
+	$('#AnswerType').val(question.answertype).trigger('change');
+	$('#ValidateQuestion').prop('checked', question.validateq);
+	$('#RequiredQuestion').prop('checked', question.requiree);
+
+if(question.answertype ==1){
+			$('.addformquestion').modal('show');
+
+}
+if(question.answertype ==4){
+			$('.addformquestion').modal('show');
+
+}if(question.answertype ==5){
+			$('.addformquestion').modal('show');
+
+}
+if(question.answertype ==8){
+			$('.addformquestion').modal('show');
+
+}
+
+	if (question.answertype == 3) {	// Populate choices
+		let choicesContainer = $('.multichoicedata tbody');
+		choicesContainer.empty();
+		if (question.choices) {
+			question.choices.forEach(choice => {
+
+				let choiceRow = `
+                <tr>
+                    <td class="text-center border-0" width="5%"><i class="fa fa-arrow-right"></i></td>
+                    <td class="border-0 p-1">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control" value="${choice}">
+                        </div>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="multichoiceadd"><i class="fa fa-plus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="multichoiceremove"><i class="fa fa-minus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                </tr>`;
+				choicesContainer.append(choiceRow);
+			});
+		}
+
+		$('.addformquestion').modal('show');
+		displayFormData();
+	} else if (question.answertype == 2) {
+		let choicesContainer = $('.singlechoicedata tbody');
+		choicesContainer.empty();
+		if (question.choices) {
+			console.log()
+			question.choices.forEach(choice => {
+
+				let choiceRow = `
+                <tr>
+                    <td class="text-center border-0" width="5%"><i class="fa fa-arrow-right"></i></td>
+                    <td class="border-0 p-1">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control" value="${choice}">
+                        </div>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="singlechoiceadd"><i class="fa fa-plus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="singlechoiceremove"><i class="fa fa-minus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                </tr>`;
+				choicesContainer.append(choiceRow);
+			});
+		}
+
+		$('.addformquestion').modal('show');
+		displayFormData();
+	} else if (question.answertype == 6) {
+		let choicesContainer = $('.singleselectdata tbody');
+		choicesContainer.empty();
+		if (question.choices) {
+			console.log()
+			question.choices.forEach(choice => {
+
+				let choiceRow = `
+                <tr>
+                    <td class="text-center border-0" width="5%"><i class="fa fa-arrow-right"></i></td>
+                    <td class="border-0 p-1">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control" value="${choice}">
+                        </div>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="singleselectadd"><i class="fa fa-plus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="singleselectremove"><i class="fa fa-minus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                </tr>`;
+				choicesContainer.append(choiceRow);
+			});
+		}
+
+		$('.addformquestion').modal('show');
+		displayFormData();
+	}
+	else if (question.answerType == 7) {
+		let choicesContainer = $('.multiselectdata tbody');
+		choicesContainer.empty();
+		if (question.choices) {
+			console.log()
+			question.choices.forEach(choice => {
+
+				let choiceRow = `
+                <tr>
+                    <td class="text-center border-0" width="5%"><i class="fa fa-arrow-right"></i></td>
+                    <td class="border-0 p-1">
+                        <div class="form-group mb-0">
+                            <input type="text" class="form-control" value="${choice}">
+                        </div>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="multiselectadd"><i class="fa fa-plus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                    <td class="text-center border-0 p-0" width="3%">
+                        <a href="javascript:void(0)" class="multiselectremove"><i class="fa fa-minus-square-o font_20 m-t-5 text-default"></i></a>
+                    </td>
+                </tr>`;
+				choicesContainer.append(choiceRow);
+			});
+		}
+
+		$('.addformquestion').modal('show');
+		displayFormData();
+}
+
+}*/
+
+
+
 

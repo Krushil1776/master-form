@@ -40,7 +40,7 @@ if (usertype == "admin") {
     document.write("</div>");
 } 
 
-else if (usertype == "client") 
+else if (usertype == "user") 
 {
     document.write("<div class='navbar-custom'>");
     document.write("<div class='container-fluid colmspadding'>");

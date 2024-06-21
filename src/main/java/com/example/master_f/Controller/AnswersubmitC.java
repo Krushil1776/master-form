@@ -3,6 +3,8 @@ package com.example.master_f.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,5 +24,11 @@ public class AnswersubmitC {
      answersubmitS.saveans(answersubmit);
 	}
 
-
+@GetMapping("/Getqestionanswercomp/{formid}/{submit}")
+public List<Object> Gqa(@PathVariable int formid,@PathVariable int submit) {
+	return answersubmitS.Gq(formid,submit);
 }
+	
+	
+	
+} 

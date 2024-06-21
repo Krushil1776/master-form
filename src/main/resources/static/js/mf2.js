@@ -1,14 +1,11 @@
 
+
 var GlobalNumberSaveEdit;
 
 let formData = []; // Global array to store form data
 let editIndex = -1;
 
 
-// Assuming formData is a global variable or it is passed as an argument to SaveAllForm function
-
-// If formData is a global variable, ensure it is defined somewhere in your script
-// let formData = [...]; 
 function SaveAllForm() {
 	let TitleText = $("#TitleText").val();
 	let AliasName = $("#AliasName").val();
@@ -26,7 +23,7 @@ function SaveAllForm() {
 	let Active = required;
 	let Text = $("#Text").val();
 
-	if (TitleText === "") {
+if (TitleText === "") {
 		toastr.error('TitleText is required.');
 		return;
 	}
@@ -62,10 +59,10 @@ function SaveAllForm() {
 		toastr.error('EffectiveDate is required.');
 		return;
 	}
-/*	if (required === "") {
+	if (required === "") {
 		toastr.error('Required is required.');
 		return;
-	}*/
+	}
 	if (Text === "") {
 		toastr.error('Text is required.');
 		return;
@@ -88,9 +85,9 @@ function SaveAllForm() {
 	// Ensure formData is defined
 
 
-	let questions = [];
+	let questions = []; 
+
 	let choicesArray = [];
-	console.log(questions);
 	for (let i = 0; i < formData.length; i++) {
 		let question = formData[i];
 		let questionChoicesArray = []; // Array to hold the choices for the current question
@@ -99,7 +96,7 @@ function SaveAllForm() {
 		if (question.choices) {
 			for (let j = 0; j < question.choices.length; j++) {
 				let choiceObject = {
-					qlabel: question.label,
+					qlabel: question.questionlabel,
 					active: 1,
 					anstype: question.answerType,
 					ans: question.choices[j]
@@ -111,18 +108,21 @@ function SaveAllForm() {
 
 		questions.push({
 			formid: $("#fid").val(),
-			questionlabel: question.label,
-			qName: question.name,
+			questionlabel: question.questionlabel,
+			qName: question.qName,
 			validateq: question.validateq,
-			requiree: question.required,
+			requiree: question.requiree,
 			description: question.description,
-			answertype: question.answerType,
+			answertype: question.answertype,
 			choices: questionChoicesArray // Add the question-specific choices array to the question object
 		});
 	}
 
 
-
+		if (questions.length == 0 ) {
+		toastr.error('Question is required.');
+		return;
+	}
 	let payload = {
 		forms: formDetails,
 		question: questions,
@@ -149,7 +149,9 @@ function SaveAllForm() {
 			console.error("Error saving form:", status, error);
 		}
 	});
+	
 }
+
 
 function clearForm() {
 	// Clear form inputs
@@ -188,6 +190,7 @@ function clearForm() {
 
 
 }
+
 function clearQuestionForm() {
 
 	$('#QuestionLabel').val('');
@@ -196,15 +199,15 @@ function clearQuestionForm() {
 	$('#QDescription').val('');
 	$('#AnswerType').val([]).selectpicker("refresh");
 	$('.multiselectdata, .multichoicedata, .singlechoicedata, .singleselectdata, .hidetextvalidation, .showanswershouldbe, .hidedatevalidation, .noansdisplaynone').hide();
-	$("#QuestionActive").val([]).selectpicker("refresh");
+	$("#reqans").prop('checked', false);
 	$("#validatans").prop('checked', false);
 
 }
 
 
+
 function Addqs() {
 	clearQuestionForm();
-	alert("okok");
 	editIndex = -1; // Ensure editIndex is cleared when adding a new question
 
 	$('.addformquestion').modal('show'); // Show the modal for adding a new question
@@ -352,8 +355,6 @@ $(document).ready(function() {
 
 
 
-
-
 $("#SaveQ").click(function() {
 
 
@@ -379,16 +380,60 @@ $("#SaveQ").click(function() {
 	let required = $("#reqans").is(":checked") ? "1" : "0"; // Check if checkbox is checked
 	let requiredd = $("#validatans").is(":checked") ? "1" : "0";
 	let questionData = {
-		label: $("#QuestionLabel").val(),
-		name: $("#QuestionName").val(),
-		required: required,
+		questionlabel: $("#QuestionLabel").val(),
+		qName: $("#QuestionName").val(),
+		requiree: required,
 		validateq: requiredd,
 		description: $("#QDescription").val(),
-		answerType: $("#AnswerType").val(),
+		answertype: $("#AnswerType").val(),
 		choices: []
 	};
+ if(questionData.answertype == 2){
+        let singleChoiceData =  $(".singlechoicedata input[type='text']");
+    
+        for(let i=0; i<singleChoiceData.length; i++){
+            if(singleChoiceData[i].value.trim() == ""){
+                toastr.error("please enter option.");
+                return false;
+            }
+        }
+    }
 
-	switch (questionData.answerType) {
+ if(questionData.answertype == 3){
+        let singleChoiceData =  $(".multichoicedata input[type='text']");
+    
+        for(let i=0; i<singleChoiceData.length; i++){
+            if(singleChoiceData[i].value.trim() == ""){
+                toastr.error("please enter option.");
+                return false;
+            }
+        }
+    }
+
+ if(questionData.answertype == 6){
+        let singleChoiceData =  $(".singleselectdata input[type='text']");
+    
+        for(let i=0; i<singleChoiceData.length; i++){
+            if(singleChoiceData[i].value.trim() == ""){
+                toastr.error("please enter option.");
+                return false;
+            }
+        }
+    }
+    
+ if(questionData.answertype == 7){
+        let singleChoiceData =  $(".multiselecttable input[type='text']");
+    
+        for(let i=0; i<singleChoiceData.length; i++){
+            if(singleChoiceData[i].value.trim() == ""){
+                toastr.error("please enter option.");
+                return false;
+            }
+        }
+    }
+
+
+	switch (questionData.answertype) {
 		case '2':
 			$('.singlechoicedata input').each(function() {
 				questionData.choices.push($(this).val());
@@ -429,42 +474,51 @@ function displayFormData() {
     table.clear();
 
     formData.forEach(function(question, index) {
-		if(question.active==0 ||question.active==1){
-			     let name;
+        console.log(question);
 
-        switch (question.answerType) {
-            case '1': name = "No Answer Required"; break;
-            case '2': name = "Single Choice"; break;
-            case '3': name = "Multiple Choice"; break;
-            case '4': name = "Single Textbox"; break;
-            case '5': name = "Multiline Textbox"; break;
-            case '6': name = "Single Select Dropdown"; break;
-            case '7': name = "Multi Select Dropdown"; break;
-            case '8': name = "Date"; break;
+        if (question.active == 9) {
+            return;
         }
+
+        const answerTypeNames = {
+            '1': "No Answer Required",
+            '2': "Single Choice",
+            '3': "Multiple Choice",
+            '4': "Single Textbox",
+            '5': "Multiline Textbox",
+            '6': "Single Select Dropdown",
+            '7': "Multi Select Dropdown",
+            '8': "Date"
+        };
+
+        let name = answerTypeNames[question.answertype] || "Unknown";
 
         let formDataHtml = `
             <tr>
                 <td>${index + 1}</td>
-                <td>${question.name}</td>
+                <td>${question.qName}</td> 
                 <td>${name}</td>
-                <td>${question.required == "1" ? 'Yes' : 'No'}</td>
+                <td>${question.requiree == "1" ? 'Yes' : 'No'}</td>
                 <td class="text-center">
                     <span class="edit-user-alert" data-index="${index}">
-                        <a onClick="editQuestion(${index})" href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="text-success fa-size"><i class="fa fa-pencil"></i></a>
+                        <a onClick="editQuestion(${index})" href="javascript:void(0)" data-toggle="tooltip" data-placement="bottom" data-original-title="Edit" class="text-success fa-size">
+                            <i class="fa fa-pencil"></i>
+                        </a>
                     </span>
                     <span class="delete-user-alert" data-index="${index}">
-                        <a href="javascript:void(0)" class="text-danger fa-size" data-toggle="tooltip" data-placement="bottom" data-original-title="Delete"><i class="fa fa-trash"></i></a>
+                        <a href="javascript:void(0)" class="text-danger fa-size" data-toggle="tooltip" data-placement="bottom" data-original-title="Delete">
+                            <i class="fa fa-trash"></i>
+                        </a>
                     </span>
                 </td>
             </tr>
         `;
-        
+
         table.row.add($(formDataHtml)).draw(false);
-		}
-   
-    });
+    });	
+    
 }
+
 
 function deleteQuestion(index) {
     if (confirm("Are you sure you want to delete this question?")) {
@@ -483,30 +537,31 @@ $(document).on('click', '.delete-user-alert', function() {
 function editQuestion(index) {
 	editIndex = index;
 	let question = formData[index];
-	$('#QuestionLabel').val(question.label);
-	$('#QuestionName').val(question.name);
+	console.log(question);
+	$('#QuestionLabel').val(question.questionlabel);
+	$('#QuestionName').val(question.qName);
 	$('#QDescription').val(question.description);
-	$('#AnswerType').val(question.answerType).trigger('change');
-	$('#ValidateQuestion').prop('checked', question.validateq);
-	$('#RequiredQuestion').prop('checked', question.required);
+	$('#AnswerType').val(question.answertype).trigger('change');
+	$('#reqans').prop('checked', Number(question.requiree) );
+	$('#validatans').prop('checked', Number(question.validateq));
 
-if(question.answerType ==1){
+if(question.answertype ==1){
 			$('.addformquestion').modal('show');
 
 }
-if(question.answerType ==4){
+if(question.answertype ==4){
 			$('.addformquestion').modal('show');
 
-}if(question.answerType ==5){
-			$('.addformquestion').modal('show');
-
-}
-if(question.answerType ==8){
+}if(question.answertype ==5){
 			$('.addformquestion').modal('show');
 
 }
+if(question.answertype ==8){
+			$('.addformquestion').modal('show');
 
-	if (question.answerType == 3) {	// Populate choices
+}
+
+	if (question.answertype == 3) {	// Populate choices
 		let choicesContainer = $('.multichoicedata tbody');
 		choicesContainer.empty();
 		if (question.choices) {
@@ -533,9 +588,12 @@ if(question.answerType ==8){
 
 		$('.addformquestion').modal('show');
 		displayFormData();
-	} else if (question.answerType == 2) {
+	} else if (question.answertype == 2) {
 		let choicesContainer = $('.singlechoicedata tbody');
+					                $(".singleselecttable tbody tr").remove();
+
 		choicesContainer.empty();
+
 		if (question.choices) {
 			console.log()
 			question.choices.forEach(choice => {
@@ -561,7 +619,7 @@ if(question.answerType ==8){
 
 		$('.addformquestion').modal('show');
 		displayFormData();
-	} else if (question.answerType == 6) {
+	} else if (question.answertype == 6) {
 		let choicesContainer = $('.singleselectdata tbody');
 		choicesContainer.empty();
 		if (question.choices) {
@@ -590,7 +648,7 @@ if(question.answerType ==8){
 		$('.addformquestion').modal('show');
 		displayFormData();
 	}
-	else if (question.answerType == 7) {
+	else if (question.answertype == 7) {
 		let choicesContainer = $('.multiselectdata tbody');
 		choicesContainer.empty();
 		if (question.choices) {
@@ -604,8 +662,7 @@ if(question.answerType ==8){
                         <div class="form-group mb-0">
                             <input type="text" class="form-control" value="${choice}">
                         </div>
-                    </td>
-                    <td class="text-center border-0 p-0" width="3%">
+                    </td><td class="text-center border-0 p-0" width="3%">
                         <a href="javascript:void(0)" class="multiselectadd"><i class="fa fa-plus-square-o font_20 m-t-5 text-default"></i></a>
                     </td>
                     <td class="text-center border-0 p-0" width="3%">
@@ -625,3 +682,4 @@ if(question.answerType ==8){
 $(function(){
 	clearForm();
 });
+

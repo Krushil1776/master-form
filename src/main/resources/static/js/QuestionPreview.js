@@ -1,42 +1,45 @@
 function QuestionPreview(id) {
-	
-    var a;
-    var b;    
-    
-    // Form data Show
-    $.ajax({
-        url: "/Get1data/" + id, // Replace with your actual endpoint
-        type: 'GET',
-        dataType: "json",
-        success: function(response) {
-            if (response) {
-                // Set values for TitleText and AliasName fields
-                a = response.title_text;
-                b = response.text;
-                document.getElementById('aa').textContent = a;
-                document.getElementById('bb').textContent = b;
-            } else {
-                console.log('No data found.');
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error(error);
-        }
-    });
 
-    // Make AJAX request to fetch question data
-    $.ajax({
-        url: "/GetQuestion/" + id, // Replace with your actual endpoint
-        type: 'GET',
-        dataType: "json",
-        success: function(response) {
-            $.each(response, function(index, item) {
-                console.log(item);
-                
-                	if (item.answertype == 1) {
-    var questionHtml = `
-        <div class="">
-            <div class="row pl-2 pr-2">
+	var a;
+	var b;
+
+	// Form data Show
+	$.ajax({
+		url: "/Get1data/" + id, // Replace with your actual endpoint
+		type: 'GET',
+		dataType: "json",
+		success: function(response) {
+			if (response) {
+				// Set values for TitleText and AliasName fields
+				a = response.title_text;
+				b = response.text;
+				document.getElementById('aa').textContent = a;
+				document.getElementById('bb').textContent = b;
+			} else {
+				console.log('No data found.');
+			}
+		},
+		error: function(xhr, status, error) {
+			console.error(error);
+		}
+	});
+
+	// Make AJAX request to fetch question data
+	$.ajax({
+		url: "/GetQuestion/" + id, // Replace with your actual endpoint
+		type: 'GET',
+		dataType: "json",
+		success: function(response) {
+			debugger
+			console.log(response)
+			$.each(response, function(index, item) {
+				console.log(item);
+				var Required = item.requiree == 1 ? "*" : "";
+
+				if (item.answertype == 1) {
+					var questionHtml = `
+ <div class="card mb-2 queshadow">
+                            <div class="card-body">            <div class="row pl-2 pr-2">
                 <div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
                     <span class="question">Q : ${index + 1}</span>
                 </div>
@@ -49,18 +52,18 @@ function QuestionPreview(id) {
             </div>
         </div>
     `;
-    
-    $('#questionContainer').append(questionHtml);
-}else if (item.answertype == 2)  {	
-                    var questionHtml = `
-                        <div class="">
-                            <div class="row pl-2 pr-2">
+
+					$('#questionContainer').append(questionHtml);
+				} else if (item.answertype == 2) {
+					var questionHtml = `
+ <div class="card mb-2 queshadow">
+                            <div class="card-body">                            <div class="row pl-2 pr-2">
                                 <div class="col-xl-1 col-lg-1 col-sm-2 col-xs-12 colmspadding">
                                     <span class="question">Q : ${index + 1}</span>
                                 </div>
                                 <div class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
                                     <div class="form-group mb-0 text-justify">
-                                        <p class="font-weight-700 mb-1 text-justify"><span class="text-danger">*</span> ${item.qName}</p>
+                                        <p class="font-weight-700 mb-1 text-justify"><span class="text-danger">${Required}</span> ${item.qName}</p>
                                         <p class="mb-1">${item.description}</p>
                                     </div>
                                     <div id="optionsContainer${index}"></div>
@@ -68,11 +71,11 @@ function QuestionPreview(id) {
                             </div>
                         </div>
                     `;
-                    
-                    $('#questionContainer').append(questionHtml);
-                    shOption(item.questionlabel, index, 'radio');
-                } else if (item.answertype == 3) {
-                    var questionHtml = `
+
+					$('#questionContainer').append(questionHtml);
+					shOption(item.questionlabel, index, 'radio');
+				} else if (item.answertype == 3) {
+					var questionHtml = `
                         <div class="card mb-2 queshadow">
                             <div class="card-body">
                                 <div class="row pl-2 pr-2">
@@ -83,7 +86,7 @@ function QuestionPreview(id) {
                                     <div class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
                                         <div class="form-group mb-0">
                                             <p class="font-weight-700 mb-1 text-justify">
-                                                <span class="text-danger">*</span> ${item.qName}
+                                                <span class="text-danger">${Required}</span> ${item.qName}
                                             </p>
                                             <p class="mb-1 text-justify">${item.description}</p>
                                         </div>
@@ -97,11 +100,11 @@ function QuestionPreview(id) {
                             </div>
                         </div>
                     `;
-                    
-                    $('#questionContainer').append(questionHtml);
-                    shOption(item.questionlabel, index, 'checkbox');
-                } else if (item.answertype == 6) {
-                    var questionHtml = `
+
+					$('#questionContainer').append(questionHtml);
+					shOption(item.questionlabel, index, 'checkbox');
+				} else if (item.answertype == 6) {
+					var questionHtml = `
                         <div class="card mb-2 queshadow">
                             <div class="card-body">
                                 <div class="row pl-2 pr-2">
@@ -111,7 +114,9 @@ function QuestionPreview(id) {
 
                                     <div class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
                                         <div class="form-group mb-0">
-                                            <p class="font-weight-700 mb-1 text-justify">${item.qName}</p>
+                                            <p class="font-weight-700 mb-1 text-justify"><span class="text-danger">
+${Required}
+   </span>${item.qName}</p>
                                             <p class="mb-1 text-justify">${item.description}</p>
                                         </div>
 
@@ -130,11 +135,11 @@ function QuestionPreview(id) {
                             </div>
                         </div>
                     `;
-                    
-                    $('#questionContainer').append(questionHtml);
-                    shOption(item.questionlabel, index, 'select');
-                }                if (item.answertype === 7) {
-                    var questionHtml = `
+
+					$('#questionContainer').append(questionHtml);
+					shOption(item.questionlabel, index, 'select');
+				} if (item.answertype === 7) {
+					var questionHtml = `
                         <div class="card mb-2 queshadow">
                             <div class="card-body">
                                 <div class="row pl-2 pr-2">
@@ -143,7 +148,9 @@ function QuestionPreview(id) {
                                     </div>
                                     <div class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
                                         <div class="form-group mb-0">
-                                            <p class="font-weight-700 mb-1 text-justify">${item.qName}</p>
+                                            <p class="font-weight-700 mb-1 text-justify"><span class="text-danger">
+${Required}
+   </span> ${item.qName}</p>
                                             <p class="mb-1 text-justify">${item.description}</p>
                                         </div>
                                         <div class="form-group mb-0">
@@ -160,11 +167,11 @@ function QuestionPreview(id) {
                             </div>
                         </div>
                     `;
-                    
-                    $('#questionContainer').append(questionHtml);
-                    shOption(item.questionlabel, index, 'multi-select');
-			                }	if (item.answertype === 8) {
-			    var questionHtml = `
+
+					$('#questionContainer').append(questionHtml);
+					shOption(item.questionlabel, index, 'multi-select');
+				} if (item.answertype === 8) {
+					var questionHtml = `
 			        <div class="card mb-2 queshadow">
 			            <div class="card-body">
 			                <div class="row pl-2 pr-2">
@@ -173,7 +180,9 @@ function QuestionPreview(id) {
 			                    </div>
 			                    <div class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
 			                        <div class="form-group mb-0">
-			                            <p class="font-weight-700 mb-1 text-justify">${item.qName}</p>
+			                            <p class="font-weight-700 mb-1 text-justify"><span class="text-danger">
+${Required}
+   </span> ${item.qName}</p>
 			                            <p class="mb-1 text-justify">${item.description}</p>
 			                        </div>
 			                        <div class="form-group mb-0">
@@ -193,10 +202,10 @@ function QuestionPreview(id) {
 			            </div>
 			        </div>
 			    `;
-			
-			    $('#questionContainer').append(questionHtml);
-			}else if (item.answertype === 4) {
-    var questionHtml = `
+
+					$('#questionContainer').append(questionHtml);
+				} else if (item.answertype === 4) {
+					var questionHtml = `
         <div class="card mb-2 queshadow">
             <div class="card-body">
                 <div class="row pl-2 pr-2">
@@ -205,7 +214,9 @@ function QuestionPreview(id) {
                     </div>
                     <div class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
                         <div class="form-group mb-0">
-                            <p class="font-weight-700 mb-1 text-justify">${item.qName}</p>
+                            <p class="font-weight-700 mb-1 text-justify"><span class="text-danger">
+${Required}
+   </span> ${item.qName}</p>
                             <p class="mb-1 text-justify">${item.description}</p>
                         </div>
                         <div class="form-group mb-0">
@@ -221,10 +232,10 @@ function QuestionPreview(id) {
         </div>
     `;
 
-    $('#questionContainer').append(questionHtml);
-}
-            else if (item.answertype === 5) {
-    var questionHtml = `
+					$('#questionContainer').append(questionHtml);
+				}
+				else if (item.answertype === 5) {
+					var questionHtml = `
         <div class="card mb-2 queshadow">
             <div class="card-body">
                 <div class="row pl-2 pr-2">
@@ -233,7 +244,9 @@ function QuestionPreview(id) {
                     </div>
                     <div class="col-xl-11 col-lg-11 col-sm-10 col-xs-12 colmspadding">
                         <div class="form-group mb-0">
-                            <p class="font-weight-700 mb-1 text-justify">${item.qName}</p>
+                            <p class="font-weight-700 mb-1 text-justify"> <span class="text-danger">
+${Required}
+                                            </span>${item.qName}</p>
                             <p class="mb-1 text-justify">${item.description}</p>
                         </div>
                         <div class="form-group mb-0">
@@ -248,35 +261,35 @@ function QuestionPreview(id) {
             </div>
         </div>
     `;
-    $('#questionContainer').append(questionHtml);
-}
-              
-                
-                
+					$('#questionContainer').append(questionHtml);
+				}
 
 
-            });
-        },
-        error: function(xhr, status, error) {
-            console.error('Error fetching question:', error);
-        }
-    });
+
+
+
+			});
+		},
+		error: function(xhr, status, error) {
+			console.error('Error fetching question:', error);
+		}
+	});
 }
 
 function shOption(questionlabel, index, inputType) {
-    $.ajax({
-        url: "/GetOPtion/" + encodeURIComponent(questionlabel), // Encode the string to handle special characters
-        type: 'GET',
-        dataType: "json",
-        success: function(response) {
-            console.log(response);
-            if (response && response.length > 0) {
-                let optionsHtml = '';
-                for (let i = 0; i < response.length; i++) {
-                    let ans = response[i];
-                    console.log(ans);
-                    if (inputType === 'radio') {
-                        optionsHtml += `
+	$.ajax({
+		url: "/GetOPtion/" + encodeURIComponent(questionlabel), // Encode the string to handle special characters
+		type: 'GET',
+		dataType: "json",
+		success: function(response) {
+			console.log(response);
+			if (response && response.length > 0) {
+				let optionsHtml = '';
+				for (let i = 0; i < response.length; i++) {
+					let ans = response[i];
+					console.log(ans);
+					if (inputType === 'radio') {
+						optionsHtml += `
                             <div class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
                                 <div class="custom-control custom-radio displayblock">
                                     <input type="radio" class="custom-control-input" id="choice${index}-${i + 1}" name="choicetwo${index}">
@@ -286,8 +299,8 @@ function shOption(questionlabel, index, inputType) {
                                 </div>
                             </div>
                         `;
-                    } else if (inputType === 'checkbox') {
-                        optionsHtml += `
+					} else if (inputType === 'checkbox') {
+						optionsHtml += `
                             <div class="col-xl-3 col-lg-3 col-sm-3 col-xs-12 colmspadding">
                                 <div class="custom-control custom-checkbox displayblock">
                                     <input type="checkbox" class="custom-control-input" id="choice${index}-${i + 1}">
@@ -297,45 +310,45 @@ function shOption(questionlabel, index, inputType) {
                                 </div>
                             </div>
                         `;
-                    } else if (inputType === 'select') {
-                        optionsHtml += `
+					} else if (inputType === 'select') {
+						optionsHtml += `
                             <option value="${ans.id}">${ans.ans}</option>
                         `;
-                    }
-                 else if (inputType === 'multi-select') {
-                        optionsHtml += `
+					}
+					else if (inputType === 'multi-select') {
+						optionsHtml += `
                             <option value="${ans.id}">${ans.ans}</option>
                         `;
-                    }
-                }
-                
-                 if (inputType === 'select'|| inputType === 'multi-select') {
-                    console.log(`#optionsContainer${index}`);
-                    console.log(optionsHtml);
-                    $(`#optionsContainer${index}`).append(optionsHtml);
-                    $(`#optionsContainer${index}`).selectpicker('refresh'); // Ensure the selectpicker is refreshed
-                } else {
-                    $('#optionsContainer' + index).html(optionsHtml);
-                }
-            } else {
-                // Handle the case where no choices are returned
-                $('#optionsContainer' + index).html('<p>No options available</p>');
-            }
-        },
-        error: function(xhr, status, error) {
-            // Handle errors here
-            $('#optionsContainer' + index).html('<p>An error occurred while fetching options</p>');
-            console.error('Error fetching options:', status, error);
-        }
-    });
+					}
+				}
+
+				if (inputType === 'select' || inputType === 'multi-select') {
+					console.log(`#optionsContainer${index}`);
+					console.log(optionsHtml);
+					$(`#optionsContainer${index}`).append(optionsHtml);
+					$(`#optionsContainer${index}`).selectpicker('refresh'); // Ensure the selectpicker is refreshed
+				} else {
+					$('#optionsContainer' + index).html(optionsHtml);
+				}
+			} else {
+				// Handle the case where no choices are returned
+				$('#optionsContainer' + index).html('<p>No options available</p>');
+			}
+		},
+		error: function(xhr, status, error) {
+			// Handle errors here
+			$('#optionsContainer' + index).html('<p>An error occurred while fetching options</p>');
+			console.error('Error fetching options:', status, error);
+		}
+	});
 }
 
 
 
 function Clearformfill() {
-    alert("Clearing form");
-    $("#aa").text("");
-    $("#bb").text("");
-    // Remove all content inside the questionContainer element
-    $('#questionContainer').empty();
+	alert("Clearing form");
+	$("#aa").text("");
+	$("#bb").text("");
+	// Remove all content inside the questionContainer element
+	$('#questionContainer').empty();
 }

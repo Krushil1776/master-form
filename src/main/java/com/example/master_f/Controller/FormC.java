@@ -42,10 +42,10 @@ public class FormC {
 	
 	
 
-	/*
-	 * @GetMapping ("/fillformdata") public List<Form> fillForm(){ return
-	 * forms.getfill(); }
-	 */
+	
+	  @GetMapping ("/fillformdata") public List<Form> fillForm(){ return
+	  forms.getfill(); }
+	 
 
 }
  
